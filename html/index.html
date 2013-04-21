@@ -26,7 +26,7 @@ html <!DOCTYPE>
 
     <div id="header">
       <h1>Space view</h1>
-      <h2 style="color: green">Voyager 1, cleaned images</h2>
+      <h2 style="color: green">Voyager, cleaned images</h2>
     </div>
 
     <div id="view">
@@ -107,17 +107,16 @@ html <!DOCTYPE>
 
   update_preview();
 
-  $.getJSON('urls.json', function(data) {
+  $.getJSON('urls_vger1.json', function(data) {
     console.log(data);
     for (var i = 0; i < data.length; i++) {
       date_url = data[i];
       image_urls[date_url[0]] = date_url[1];
     }
-    console.log("URLS", image_urls);
   });
 
 
-  $.getJSON('voyager.json', function(data) {
+  $.getJSON('path_vger1.json', function(data) {
     path = data;
 
     var path_points = vis.selectAll('ellipse.step').data(path, function(p) { return p[0]; });

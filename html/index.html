@@ -60,6 +60,7 @@ html <!DOCTYPE>
             .attr('fill', 'none').attr('opacity',1).attr('stroke-width', 1).attr('stroke',color).classed('orbit',true);
 
   var path = [];
+  var image_urls = {};
   var current_step_idx = null;
   var auto_forward = false;
 
@@ -68,12 +69,23 @@ html <!DOCTYPE>
     if (current_step_idx != null) {
       var step = path[current_step_idx];
       $("#clicked-date").html(step[0]);
+  console.log("URL", current_step()[0], image_urls);
+      $("#detail-view img").attr("src", image_urls[current_step()[0]] || "-");
       $("#detail-view").stop(true).fadeIn(50);
     }
   }
 
   function x_from_step(step) { return step[1] * SCALE; }
   function y_from_step(step) { return -step[2] * SCALE; }
+  function r_from_step(step) {
+    // TODO: fix the race condition between loading path and image_urls
+    if (image_urls[step[0]]) {
+      return 3;
+    } else {
+      return 0.2;
+    }
+  }
+
   function current_step() { return path[current_step_idx]; }
 
   function update_marker() {
@@ -90,13 +102,23 @@ html <!DOCTYPE>
 
   update_preview();
 
-  $.getJSON('./voyager.json', function(data) {
+  $.getJSON('urls.json', function(data) {
+    console.log(data);
+    for (var i = 0; i < data.length; i++) {
+      date_url = data[i];
+      image_urls[date_url[0]] = date_url[1];
+    }
+    console.log("URLS", image_urls);
+  });
+
+
+  $.getJSON('voyager.json', function(data) {
     path = data;
 
     var path_points = vis.selectAll('ellipse.step').data(path, function(p) { return p[0]; });
     path_points
       .enter().append('ellipse')
-        .attr('cx', x_from_step).attr('cy', y_from_step).attr('rx', 3).attr('ry', 3)
+        .attr('cx', x_from_step).attr('cy', y_from_step).attr('rx', r_from_step).attr('ry', r_from_step)
         .attr('fill', 'green').attr('stroke', 'green')
         .attr('opacity', 1).classed('step', true)
         .on("mouseover",function(d,i) { d3.select(this).attr("fill","red"); }) 

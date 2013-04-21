@@ -1,6 +1,6 @@
 #!/usr/bin/python
 import json
 
-d = eval(open('urls.out').read())
+data = eval(open('vger1.out').read())
 
-print json.dumps(dict(d).items())
+print json.dumps(dict([(y, url) for (y, h, tgt, url) in data]).items())

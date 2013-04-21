@@ -2,7 +2,7 @@ html <!DOCTYPE>
 <!-- loosely based on https://raw.github.com/acruikshank/c5-d3-lunch-talk/master/solar-system3.html -->
 <html>
   <head>
-    <title></title>
+    <title>Space view</title>
     <script type="text/javascript" src="jquery-1.9.1.min.js"></script>
     <script type="text/javascript" src="d3.v2.min.js"></script>
     <style type="text/css">
@@ -13,9 +13,19 @@ html <!DOCTYPE>
       #detail-view { position: absolute; width: 400px; background: white; color: black; top: 4px; right: 4px; z-index: 100; padding: 6px;}
       #detail-view img { width: 100%; }
       #detail-view p { color: black; font-size: 20px; margin: 0; padding: 0 }
+
+      #header { position: absolute; color: #fff; width: 100%; text-align: center }
+      h1 { font-size: 30px; padding: 0; margin: 0; }
+      h2 { font-size: 18px; padding: 0; margin: 0; }
     </style>
   </head>
   <body>
+
+    <div id="header">
+      <h1>Space view</h1>
+      <h2 style="color: green">Voyager 1</h2>
+    </div>
+
     <div id="view">
       <div id="detail-view">
         <img src="http://pds-rings.seti.org/volumes/VGISS_6xxx/VGISS_6109/BROWSE/C34512XX/C3451210_GEOMED.JPG" />

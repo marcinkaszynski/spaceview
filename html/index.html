@@ -5,6 +5,9 @@ html <!DOCTYPE>
     <title>Space view</title>
     <script type="text/javascript" src="jquery-1.9.1.min.js"></script>
     <script type="text/javascript" src="d3.v2.min.js"></script>
+
+    <link href='http://fonts.googleapis.com/css?family=Berkshire+Swash' rel='stylesheet' type='text/css'>
+
     <style type="text/css">
       body { background: black; margin: 0; padding: 0 }
       svg { width: 1200px; height: 600px; margin:0 auto}
@@ -12,7 +15,7 @@ html <!DOCTYPE>
       #view { position: relative; }
       #detail-view { position: absolute; width: 400px; background: white; color: black; top: 4px; right: 4px; z-index: 100; padding: 6px;}
       #detail-view img { width: 100%; }
-      #detail-view p { color: black; font-size: 20px; margin: 0; padding: 0 }
+      #detail-view p { color: black; font-size: 20px; margin: 0; padding: 0; font-family: 'Berkshire Swash', cursive; }
 
       #header { position: absolute; color: #fff; width: 100%; text-align: center }
       h1 { font-size: 30px; padding: 0; margin: 0; }
@@ -64,8 +67,24 @@ html <!DOCTYPE>
     if (current_step_idx != null) {
       var step = path[current_step_idx];
       $("#clicked-date").html(step[0]);
-      $("#detail-view").fadeIn(50);
+      $("#detail-view").stop(true).fadeIn(50);
     }
+  }
+
+  function x_from_step(step) { return step[1] * SCALE; }
+  function y_from_step(step) { return -step[2] * SCALE; }
+  function current_step() { return path[current_step_idx]; }
+
+  function update_marker() {
+    d3.select("#stepMarker").remove();
+    vis.append("ellipse").attr("id", "stepMarker")
+       .attr("cx", x_from_step(current_step())).attr("cy", y_from_step(current_step())).attr("rx", 3).attr("ry", 3).attr("fill", "blue");
+  }
+
+  function on_step_click(step, idx) {
+    current_step_idx = idx;
+    update_preview();
+    update_marker();
   }
 
   update_preview();
@@ -76,27 +95,32 @@ html <!DOCTYPE>
     var path_points = vis.selectAll('ellipse.step').data(path, function(p) { return p[0]; });
     path_points
       .enter().append('ellipse')
-        .attr('cx', function(p) { return p[1] * SCALE; }).attr('cy', function(p) { return -p[2] * SCALE; }).attr('rx', 3).attr('ry', 3)
+        .attr('cx', x_from_step).attr('cy', y_from_step).attr('rx', 3).attr('ry', 3)
         .attr('fill', 'green').attr('stroke', 'green')
         .attr('opacity', 1).classed('step', true)
         .on("mouseover",function(d,i) { d3.select(this).attr("fill","red"); }) 
         .on("mouseout",function(d,i) { d3.select(this).attr("fill","green"); })
-        .on("click",function(d,i) { current_step_idx = i; update_preview(); })
+        .on("click",on_step_click)
         .append('svg:title').text(function(p) { return p[0] + ": " + p[1] + "," + p[2];})
         ;
   })
   .fail(function(jqXHR, textStatus, errorThrown) { alert("error" +  textStatus + " " + errorThrown); });
 
+  function set_current_step(idx) {
+      current_step_idx = Math.min(path.length - 1, Math.max(0, idx));
+      update_preview();
+      update_marker();
+  }
+
   function change_current(direction) {
     if (current_step_idx == null) {
       if (direction == -1) {
-        current_step_idx = path.length - 1;
+        set_current_step(path.length - 1);
       } else {
-        current_step_idx = 0;
+        set_current_step(0);
       }
     } else {
-      current_step_idx = Math.min(path.length - 1, Math.max(0, current_step_idx + direction));
-      update_preview();
+      set_current_step(current_step_idx + direction);
     }
   }
 

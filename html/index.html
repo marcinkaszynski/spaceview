@@ -47,7 +47,18 @@ html <!DOCTYPE>
             .attr('fill', 'none').attr('opacity',1).attr('stroke-width', 1).attr('stroke',color).classed('orbit',true);
 
   var path = [];
-  var current_step = null;
+  var current_step_idx = null;
+
+  function update_preview() {
+    $("#detail-view").fadeOut(50);
+    if (current_step_idx != null) {
+      var step = path[current_step_idx];
+      $("#clicked-date").html(step[0]);
+      $("#detail-view").fadeIn(50);
+    }
+  }
+
+  update_preview();
 
   $.getJSON('./voyager.json', function(data) {
     path = data;
@@ -60,7 +71,7 @@ html <!DOCTYPE>
         .attr('opacity', 1).classed('step', true)
         .on("mouseover",function(d,i) { d3.select(this).attr("fill","red"); }) 
         .on("mouseout",function(d,i) { d3.select(this).attr("fill","green"); })
-        .on("click",function(d,i) { current_step = d; $("#clicked-date").html(d[0]);})
+        .on("click",function(d,i) { current_step_idx = i; update_preview(); })
         .append('svg:title').text(function(p) { return p[0] + ": " + p[1] + "," + p[2];})
         ;
   })

@@ -61,6 +61,7 @@ html <!DOCTYPE>
 
   var path = [];
   var current_step_idx = null;
+  var auto_forward = false;
 
   function update_preview() {
     $("#detail-view").fadeOut(50);
@@ -124,13 +125,31 @@ html <!DOCTYPE>
     }
   }
 
+  function do_the_auto_forwarding() {
+    if (auto_forward)
+      change_current(1);
+  }
+  setInterval(do_the_auto_forwarding, 1000);
+
   $(document).keydown(function(e){
       if (e.keyCode == 37) { 
          change_current(-1);
          return false;
       }
+      if (e.keyCode == 38) { 
+         change_current(-10);
+         return false;
+      }
       if (e.keyCode == 39) { 
          change_current(1);
+         return false;
+      }
+      if (e.keyCode == 40) { 
+         change_current(10);
+         return false;
+      }
+      if (e.keyCode == 32) { 
+         auto_forward = !auto_forward;
          return false;
       }
   });

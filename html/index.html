@@ -10,10 +10,10 @@ html <!DOCTYPE>
 
     <style type="text/css">
       body { background: black; margin: 0; padding: 0 }
-      svg { width: 1200px; height: 600px; margin:0 auto}
+      svg { width: 1200px; height: 700px; margin:0 auto}
       .step { background: green; }
       #view { position: relative; }
-      #detail-view { position: absolute; width: 400px; background: white; color: black; top: 4px; right: 4px; z-index: 100; padding: 6px;}
+      #detail-view { position: absolute; width: 500px; background: white; color: black; top: 4px; right: 4px; z-index: 100; padding: 6px;}
       #detail-view img { width: 100%; }
       #detail-view p { color: black; font-size: 20px; margin: 0; padding: 0; font-family: 'Berkshire Swash', cursive; }
 
@@ -26,12 +26,14 @@ html <!DOCTYPE>
 
     <div id="header">
       <h1>Space view</h1>
-      <h2 style="color: green">Voyager 1</h2>
+      <h2 style="color: green">Voyager 1, cleaned images</h2>
     </div>
 
     <div id="view">
       <div id="detail-view">
-        <img src="http://pds-rings.seti.org/volumes/VGISS_6xxx/VGISS_6109/BROWSE/C34512XX/C3451210_GEOMED.JPG" />
+        <a href="-" target="_new">
+          <img src="-" />
+        </a>
         <p>Voyager, <span id="clicked-date">YEAR-MM-DD</span></p>
       </div>
     </div>
@@ -52,7 +54,7 @@ html <!DOCTYPE>
   function orbit(d) { return d.distance * SCALE; }
   function color(d) { return d.color ? d.color : '#aaa'; }
 
-  var vis = d3.select("#view").append("svg").append('g').attr('transform','translate(300,300) rotate(-90)');
+  var vis = d3.select("#view").append("svg").append('g').attr('transform','translate(300,400) rotate(-90)');
 
   var orbits = vis.selectAll('ellipse.orbit').data(objects, function(d) { return d.name; });
   orbits
@@ -67,10 +69,13 @@ html <!DOCTYPE>
   function update_preview() {
     $("#detail-view").fadeOut(50);
     if (current_step_idx != null) {
-      var step = path[current_step_idx];
+      var step = path[current_step_idx]; 
       $("#clicked-date").html(step[0]);
-  console.log("URL", current_step()[0], image_urls);
-      $("#detail-view img").attr("src", image_urls[current_step()[0]] || "-");
+
+      var url = image_urls[current_step()[0]] || "-";
+
+      $("#detail-view img").attr("src", url);
+      $("#detail-view a").attr("href", url);
       $("#detail-view").stop(true).fadeIn(50);
     }
   }

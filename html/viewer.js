@@ -9,7 +9,7 @@ var objects = [
   { name:'Neptune', distance:30.1094 },
 ]
 
-var SCALE = 8;
+var SCALE = 15;
 
 function orbit(d) { return d.distance * SCALE; }
 function color(d) { return d.color ? d.color : '#aaa'; }
@@ -138,6 +138,7 @@ function show_craft(name) {
         current_step_idx = idx;
         update_preview();
         update_marker();
+        return false;
     }
 
     path_points
@@ -162,7 +163,7 @@ function load_craft(name) {
 }
 
 function start_viewer() {
-    vis = d3.select("#view").append("svg").append('g').attr('transform','translate(300,400) rotate(-90)');
+    vis = d3.select("#view").append("svg").append('g').attr('transform','translate(200,350) rotate(-90)');
 
     orbits = vis.selectAll('ellipse.orbit').data(objects, function(d) { return d.name; });
     orbits
@@ -171,6 +172,6 @@ function start_viewer() {
 
     load_craft('vger1');
     load_craft('vger2');
-
+    
     update_preview();    
 }

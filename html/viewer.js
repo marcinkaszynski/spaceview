@@ -75,26 +75,26 @@ function do_the_auto_forwarding() {
 setInterval(do_the_auto_forwarding, 1000);
 
 $(document).keydown(function(e){
-//    if (e.keyCode == 37) { 
-//       change_current(-1);
-//       return false;
-//    }
-//    if (e.keyCode == 38) { 
-//       change_current(-10);
-//       return false;
-//    }
-//    if (e.keyCode == 39) { 
-//       change_current(1);
-//       return false;
-//    }
-//    if (e.keyCode == 40) { 
-//       change_current(10);
-//       return false;
-//    }
-//    if (e.keyCode == 32) { 
-//       auto_forward = !auto_forward;
-//       return false;
-//    }
+    if (e.keyCode == 37) { 
+       change_current(-1);
+       return false;
+    }
+    if (e.keyCode == 38) { 
+       change_current(-10);
+       return false;
+    }
+    if (e.keyCode == 39) { 
+       change_current(1);
+       return false;
+    }
+    if (e.keyCode == 40) { 
+       change_current(10);
+       return false;
+    }
+    if (e.keyCode == 32) { 
+       auto_forward = !auto_forward;
+       return false;
+    }
 });
 
 var Crafts = {};

@@ -87,6 +87,30 @@ html <!DOCTYPE>
   })
   .fail(function(jqXHR, textStatus, errorThrown) { alert("error" +  textStatus + " " + errorThrown); });
 
+  function change_current(direction) {
+    if (current_step_idx == null) {
+      if (direction == -1) {
+        current_step_idx = path.length - 1;
+      } else {
+        current_step_idx = 0;
+      }
+    } else {
+      current_step_idx = Math.min(path.length - 1, Math.max(0, current_step_idx + direction));
+      update_preview();
+    }
+  }
+
+  $(document).keydown(function(e){
+      if (e.keyCode == 37) { 
+         change_current(-1);
+         return false;
+      }
+      if (e.keyCode == 39) { 
+         change_current(1);
+         return false;
+      }
+  });
+
     </script>
   </body>
 </html>
